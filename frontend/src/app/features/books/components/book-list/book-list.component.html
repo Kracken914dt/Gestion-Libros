@@ -158,7 +158,14 @@
             >
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
+                  <img
+                    *ngIf="book.coverImageUrl"
+                    [src]="book.coverImageUrl"
+                    [alt]="book.title"
+                    class="h-12 w-9 flex-shrink-0 rounded-md border border-gray-200 object-cover"
+                  />
                   <div
+                    *ngIf="!book.coverImageUrl"
                     class="flex-shrink-0 h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center"
                   >
                     <svg

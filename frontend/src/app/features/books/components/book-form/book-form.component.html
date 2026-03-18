@@ -70,6 +70,35 @@
             </div>
           </div>
 
+          <!-- Cover Image URL -->
+          <div class="sm:col-span-6">
+            <label for="coverImageUrl" class="ui-label">Cover Image URL</label>
+            <div class="mt-1">
+              <input
+                type="url"
+                id="coverImageUrl"
+                formControlName="coverImageUrl"
+                class="ui-input"
+                [class.border-red-300]="coverImageUrl?.invalid && coverImageUrl?.touched"
+                placeholder="https://example.com/cover.jpg"
+              />
+            </div>
+            <p class="ui-field-caption">Use a public image URL (http/https)</p>
+            <div *ngIf="coverImageUrl?.invalid && coverImageUrl?.touched" class="mt-1 text-sm text-red-600">
+              <span *ngIf="coverImageUrl?.errors?.['pattern']">Enter a valid URL (http/https)</span>
+              <span *ngIf="coverImageUrl?.errors?.['maxlength']">URL cannot exceed 500 characters</span>
+            </div>
+
+            <div *ngIf="bookForm.value.coverImageUrl" class="mt-4">
+              <p class="ui-label mb-2">Preview</p>
+              <img
+                [src]="bookForm.value.coverImageUrl"
+                alt="Book cover preview"
+                class="h-40 w-28 rounded-lg border border-gray-200 object-cover"
+              />
+            </div>
+          </div>
+
           <!-- Genre -->
           <div class="sm:col-span-3">
             <label for="genre" class="ui-label">Genre</label>
