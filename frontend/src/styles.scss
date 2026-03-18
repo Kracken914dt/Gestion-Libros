@@ -116,7 +116,7 @@ html.dark .hover\:bg-red-50:hover {
   background-color: #1f2937 !important;
 }
 
-html.dark input,
+html.dark input:not([type='checkbox']):not([type='radio']),
 html.dark select,
 html.dark textarea {
   background-color: #0f172a !important;
@@ -133,6 +133,63 @@ html.dark .shadow-lg,
 html.dark .shadow-xl,
 html.dark .shadow-md {
   --tw-shadow-color: rgb(0 0 0 / 0.45);
+}
+
+@layer components {
+  .ui-label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-[0.08em] text-gray-600;
+  }
+
+  .ui-input,
+  .ui-select,
+  .ui-textarea {
+    @apply block w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-800 shadow-sm transition-all duration-200 placeholder:text-gray-400 focus:border-primary-500 focus:outline-none focus:ring-4 focus:ring-primary-500/20;
+  }
+
+  .ui-input-icon {
+    @apply pl-10;
+  }
+
+  .ui-textarea {
+    @apply min-h-[120px] resize-y leading-relaxed;
+  }
+
+  .ui-field-caption {
+    @apply mt-1 text-xs text-gray-500;
+  }
+
+  .ui-input.ng-invalid.ng-touched,
+  .ui-select.ng-invalid.ng-touched,
+  .ui-textarea.ng-invalid.ng-touched {
+    @apply border-red-400 focus:border-red-500 focus:ring-red-500/20;
+  }
+
+  html.dark .ui-label {
+    color: #cbd5e1;
+  }
+
+  html.dark .ui-input,
+  html.dark .ui-select,
+  html.dark .ui-textarea {
+    border-color: #334155;
+    background-color: #0f172a;
+    color: #e5e7eb;
+  }
+
+  html.dark .ui-input::placeholder,
+  html.dark .ui-textarea::placeholder {
+    color: #94a3b8;
+  }
+
+  html.dark .ui-input:hover,
+  html.dark .ui-select:hover,
+  html.dark .ui-textarea:hover {
+    border-color: #475569;
+  }
+
+  html.dark .ui-field-caption {
+    color: #94a3b8;
+  }
 }
 
 /* Animations */
