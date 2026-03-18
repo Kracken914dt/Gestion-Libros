@@ -1,0 +1,136 @@
+<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="flex justify-center items-center py-12">
+      <app-loading></app-loading>
+    </div>
+
+    <!-- Book Detail -->
+    <div *ngIf="!loading && book" class="animate-fade-in">
+      <!-- Back Button -->
+      <button
+        (click)="onBack()"
+        class="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 transition-colors mb-6"
+      >
+        <svg class="mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back to Books
+      </button>
+
+      <!-- Book Card -->
+      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <!-- Header -->
+        <div class="bg-primary-600 px-6 py-8 sm:px-8">
+          <div class="flex items-start justify-between">
+            <div class="flex-1">
+              <div class="flex items-center gap-3 mb-2">
+                <span
+                  [class]="book.isAvailable
+                    ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800'
+                    : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800'"
+                >
+                  {{ book.isAvailable ? 'Available' : 'Not Available' }}
+                </span>
+                <span
+                  *ngIf="book.genre"
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/20 text-white"
+                >
+                  {{ book.genre }}
+                </span>
+              </div>
+              <h1 class="text-3xl font-bold text-white">{{ book.title }}</h1>
+              <p class="mt-2 text-lg text-primary-100">by {{ book.author }}</p>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center space-x-2 ml-4">
+              <button
+                (click)="onEdit()"
+                class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-primary-700 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
+              >
+                <svg class="-ml-1 mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+                Edit
+              </button>
+              <button
+                (click)="onDelete()"
+                class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+              >
+                <svg class="-ml-1 mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="px-6 py-8 sm:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Main Info -->
+            <div class="lg:col-span-2 space-y-6">
+              <div *ngIf="book.description">
+                <h2 class="text-lg font-medium text-gray-900 mb-2">Description</h2>
+                <p class="text-gray-600 leading-relaxed whitespace-pre-wrap">{{ book.description }}</p>
+              </div>
+
+              <div *ngIf="!book.description" class="text-gray-400 italic">
+                No description available.
+              </div>
+            </div>
+
+            <!-- Sidebar Info -->
+            <div class="space-y-6">
+              <div class="bg-gray-50 rounded-lg p-4">
+                <h3 class="text-sm font-medium text-gray-900 uppercase tracking-wider mb-4">
+                  Book Details
+                </h3>
+                <dl class="space-y-3">
+                  <div *ngIf="book.isbn">
+                    <dt class="text-sm font-medium text-gray-500">ISBN</dt>
+                    <dd class="mt-1 text-sm text-gray-900 font-mono">{{ book.isbn }}</dd>
+                  </div>
+
+                  <div *ngIf="book.publisher">
+                    <dt class="text-sm font-medium text-gray-500">Publisher</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ book.publisher }}</dd>
+                  </div>
+
+                  <div *ngIf="book.publicationDate">
+                    <dt class="text-sm font-medium text-gray-500">Publication Date</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ formatDate(book.publicationDate) }}</dd>
+                  </div>
+
+                  <div *ngIf="book.genre">
+                    <dt class="text-sm font-medium text-gray-500">Genre</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ book.genre }}</dd>
+                  </div>
+                </dl>
+              </div>
+
+              <div class="bg-gray-50 rounded-lg p-4">
+                <h3 class="text-sm font-medium text-gray-900 uppercase tracking-wider mb-4">
+                  Metadata
+                </h3>
+                <dl class="space-y-3">
+                  <div>
+                    <dt class="text-sm font-medium text-gray-500">Created</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ formatDate(book.createdAt) }}</dd>
+                  </div>
+
+                  <div>
+                    <dt class="text-sm font-medium text-gray-500">Last Updated</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ formatDate(book.updatedAt) }}</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
