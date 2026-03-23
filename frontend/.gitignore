@@ -6,8 +6,9 @@ dist/
 out-tsc/
 build/
 
-# Environment files (if needed)
-src/environments/*.ts
+# Environment files
+# Keep Angular defaults versioned; use *.local.ts for machine-specific overrides.
+src/environments/*.local.ts
 
 # Logs
 npm-debug.log*
