@@ -10,16 +10,30 @@ import bookRoutes from "./modules/books/books.routes";
 
 const app = express();
 
+const normalizeOrigin = (origin: string): string => origin.replace(/\/$/, "");
+
+const isOriginAllowed = (origin: string): boolean => {
+  const normalizedOrigin = normalizeOrigin(origin);
+
+  return env.CORS_ORIGINS.some((allowedOrigin) => {
+    if (allowedOrigin.startsWith("*.")) {
+      const domain = allowedOrigin.slice(1); // '.vercel.app'
+      return normalizedOrigin.endsWith(domain);
+    }
+    return normalizedOrigin === allowedOrigin;
+  });
+};
+
 app.use(helmet());
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || env.CORS_ORIGINS.includes(origin)) {
+      if (!origin || isOriginAllowed(origin)) {
         callback(null, true);
         return;
       }
-      callback(new Error(`Origin not allowed by CORS: ${origin}`));
+      callback(null, false);
     },
     credentials: false,
   }),

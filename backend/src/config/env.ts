@@ -18,6 +18,8 @@ const getEnvVar = (name: string, defaultValue?: string): string => {
   return value;
 };
 
+const normalizeOrigin = (origin: string): string => origin.replace(/\/$/, "");
+
 export const env: EnvConfig = {
   PORT: parseInt(getEnvVar("PORT", "3000"), 10),
   NODE_ENV: getEnvVar("NODE_ENV", "development"),
@@ -25,6 +27,7 @@ export const env: EnvConfig = {
   CORS_ORIGINS: getEnvVar("CORS_ORIGIN", "http://localhost:4200")
     .split(",")
     .map((origin) => origin.trim())
+    .map(normalizeOrigin)
     .filter(Boolean),
   LOG_LEVEL: getEnvVar("LOG_LEVEL", "info"),
 };
