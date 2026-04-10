@@ -1,13 +1,13 @@
 # Aplicacion de Gestion de Libros
 
-Aplicacion CRUD full-stack para gestionar libros, construida con Angular (frontend), Node.js/Express (backend) y MongoDB Atlas (base de datos).
+Aplicacion CRUD full-stack para gestionar libros, construida con React (frontend), Node.js/Express (backend) y MongoDB Atlas (base de datos).
 
 ## Arquitectura
 
 ```
 book-management-app/
 ├── backend/          # API con Express + TypeScript
-├── frontend/         # SPA con Angular + TailwindCSS
+├── frontend/         # SPA con React + TailwindCSS
 └── docker-compose.yml
 ```
 
@@ -54,7 +54,7 @@ La API estara disponible en `http://localhost:3000`.
 ```bash
 cd frontend
 npm install
-ng serve
+npm run dev
 ```
 
 La aplicacion estara disponible en `http://localhost:4200`.
@@ -91,8 +91,9 @@ La aplicacion estara disponible en `http://localhost:4200`.
 - Logger con Winston
 
 ### Frontend
-- Angular 17 con componentes standalone
-- Formularios reactivos con validacion
+- React 18 con Vite
+- React Router para navegacion
+- Axios para consumo de API
 - TailwindCSS para estilos
 - Diseno responsivo
 - Estados de carga y manejo de errores
@@ -153,11 +154,11 @@ frontend/src/app/
 - Winston
 
 ### Frontend
-- Angular 17
-- TypeScript 5
+- React 18
+- Vite 5
 - TailwindCSS 3
-- RxJS 7
-- Angular Animations
+- React Router 6
+- Axios
 
 ## Desarrollo
 
@@ -172,7 +173,7 @@ npm test
 Frontend:
 ```bash
 cd frontend
-ng test
+npm run build
 ```
 
 ### Compilar para Produccion
@@ -186,7 +187,7 @@ npm run build
 Frontend:
 ```bash
 cd frontend
-ng build --configuration production
+npm run build
 ```
 
 ## Licencia

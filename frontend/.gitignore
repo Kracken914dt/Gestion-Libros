@@ -1,27 +1,26 @@
-# Node modules
+# dependencies
 node_modules/
 
-# Angular build output
+# production build
 dist/
-out-tsc/
-build/
 
-# Environment files
-# Keep Angular defaults versioned; use *.local.ts for machine-specific overrides.
-src/environments/*.local.ts
+# local env files
+.env
+.env.*
+!.env.example
 
-# Logs
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
-# IDEs
+# cache and temp
+.vite/
+*.local
+
+# editor and OS files
 .vscode/
 .idea/
-
-# OS generated files
 .DS_Store
 Thumbs.db
-
-# Angular cache
-.angular/cache/
