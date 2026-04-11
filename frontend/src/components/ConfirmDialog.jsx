@@ -1,3 +1,5 @@
+import Loader from './Loader';
+
 export default function ConfirmDialog({ open, title, message, onCancel, onConfirm, loading, theme = 'dark' }) {
   const isLight = theme === 'light';
 
@@ -26,9 +28,9 @@ export default function ConfirmDialog({ open, title, message, onCancel, onConfir
           <button
             onClick={onConfirm}
             disabled={loading}
-            className="rounded-lg bg-rose-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-rose-400 disabled:opacity-60"
+            className="inline-flex min-w-[120px] items-center justify-center rounded-lg bg-rose-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-rose-400 disabled:opacity-60"
           >
-            {loading ? 'Eliminando...' : 'Eliminar'}
+            {loading ? <Loader inline size="sm" label="Eliminando..." theme="dark" className="text-white" /> : 'Eliminar'}
           </button>
         </div>
       </div>

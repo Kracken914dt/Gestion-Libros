@@ -2,6 +2,7 @@ import { BookOpenText, KeyRound, Mail, MoveRight, Eye, EyeOff } from 'lucide-rea
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, register } from '../api/auth';
+import Loader from '../components/Loader';
 import { applyTheme, getInitialTheme } from '../utils/theme';
 
 export default function LoginPage() {
@@ -149,17 +150,21 @@ export default function LoginPage() {
             </label>
           )}
 
-          <button type="submit" className="auth-primary-btn" disabled={loading}>
-            <span>
-              {loading
-                ? mode === 'login'
-                  ? 'Signing In...'
-                  : 'Creating account...'
-                : mode === 'login'
-                  ? 'Sign In'
-                  : 'Create Account'}
-            </span>
-            {!loading && <MoveRight size={16} />}
+          <button type="submit" className="auth-primary-btn inline-flex items-center justify-center gap-2" disabled={loading}>
+            {loading ? (
+              <Loader
+                inline
+                size="sm"
+                theme={isLight ? 'light' : 'dark'}
+                label={mode === 'login' ? 'Signing In...' : 'Creating account...'}
+                className="text-white"
+              />
+            ) : (
+              <>
+                <span>{mode === 'login' ? 'Sign In' : 'Create Account'}</span>
+                <MoveRight size={16} />
+              </>
+            )}
           </button>
         </form>
 

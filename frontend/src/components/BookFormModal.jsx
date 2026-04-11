@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import Loader from './Loader';
 
 const emptyForm = {
   title: '',
@@ -192,9 +193,11 @@ export default function BookFormModal({ open, mode, initialValues, onClose, onSu
             <button
               type="submit"
               disabled={loading}
-              className="rounded-lg bg-electric px-5 py-2 text-sm font-medium text-white transition hover:bg-electricSoft disabled:opacity-60"
+              className="inline-flex min-w-[152px] items-center justify-center rounded-lg bg-electric px-5 py-2 text-sm font-medium text-white transition hover:bg-electricSoft disabled:opacity-60"
             >
-              {loading ? 'Guardando...' : mode === 'edit' ? 'Save changes' : 'Create book'}
+              {loading ? (
+                <Loader inline size="sm" label="Guardando..." theme="dark" className="text-white" />
+              ) : mode === 'edit' ? 'Save changes' : 'Create book'}
             </button>
           </div>
         </form>

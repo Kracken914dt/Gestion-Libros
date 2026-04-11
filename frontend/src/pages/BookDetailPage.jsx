@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { deleteBook, getBookById, updateBook } from '../api/books';
 import BookFormModal from '../components/BookFormModal';
 import ConfirmDialog from '../components/ConfirmDialog';
+import Loader from '../components/Loader';
 import { isAdminUser } from '../utils/auth';
 
 const formatLongDate = (value) => {
@@ -75,7 +76,7 @@ export default function BookDetailPage() {
   if (loading) {
     return (
       <main className="grid min-h-screen place-items-center bg-hero-grid text-slate-300">
-        Loading details...
+        <Loader theme="dark" size="lg" label="Cargando detalles..." />
       </main>
     );
   }

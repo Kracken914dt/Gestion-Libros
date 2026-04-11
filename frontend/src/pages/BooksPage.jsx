@@ -5,6 +5,7 @@ import { createBook, deleteBook, getBooks, updateBook } from '../api/books';
 import BookCard from '../components/BookCard';
 import BookFormModal from '../components/BookFormModal';
 import ConfirmDialog from '../components/ConfirmDialog';
+import Loader from '../components/Loader';
 import { applyTheme, getInitialTheme } from '../utils/theme';
 import { isAdminUser } from '../utils/auth';
 
@@ -268,7 +269,7 @@ export default function BooksPage() {
               theme === 'light' ? 'border-slate-200 bg-white' : 'border-white/5 bg-slatePanel'
             }`}
           >
-            <p className={`animate-pulse ${theme === 'light' ? 'text-slate-600' : 'text-slate-300'}`}>Loading books...</p>
+            <Loader theme={theme} size="lg" label="Cargando libros..." />
           </div>
         ) : (
           viewMode === 'cards' ? (
