@@ -12,7 +12,29 @@ const emptyForm = {
   isAvailable: true,
 };
 
-export default function BookFormModal({ open, mode, initialValues, onClose, onSubmit, loading }) {
+const GENRE_OPTIONS = [
+  'Fiction',
+  'Non-Fiction',
+  'Mystery',
+  'Thriller',
+  'Romance',
+  'Science Fiction',
+  'Fantasy',
+  'Biography',
+  'History',
+  'Self-Help',
+  'Business',
+  'Technology',
+  'Poetry',
+  'Drama',
+  'Horror',
+  'Adventure',
+  'Children',
+  'Other',
+];
+
+export default function BookFormModal({ open, mode, initialValues, onClose, onSubmit, loading, theme = 'dark' }) {
+  const isLight = theme === 'light';
   const [form, setForm] = useState(emptyForm);
   const [error, setError] = useState('');
 
@@ -77,12 +99,18 @@ export default function BookFormModal({ open, mode, initialValues, onClose, onSu
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 p-4">
-      <div className="mx-auto mt-10 w-full max-w-3xl rounded-2xl border border-white/10 bg-[#0d2347] p-6 shadow-2xl shadow-black/50">
+      <div
+        className={`mx-auto mt-10 w-full max-w-3xl rounded-2xl border p-6 shadow-2xl ${
+          isLight ? 'border-slate-200 bg-white shadow-slate-300/60' : 'border-white/10 bg-[#0d2347] shadow-black/50'
+        }`}
+      >
         <div className="mb-6 flex items-center justify-between">
-          <h3 className="text-2xl font-semibold text-white">{title}</h3>
+          <h3 className={`text-2xl font-semibold ${isLight ? 'text-slate-900' : 'text-white'}`}>{title}</h3>
           <button
             onClick={onClose}
-            className="rounded-md border border-white/20 px-3 py-1 text-sm text-slate-200 hover:bg-white/10"
+            className={`rounded-md border px-3 py-1 text-sm ${
+              isLight ? 'border-slate-300 text-slate-700 hover:bg-slate-100' : 'border-white/20 text-slate-200 hover:bg-white/10'
+            }`}
           >
             Close
           </button>
@@ -111,7 +139,14 @@ export default function BookFormModal({ open, mode, initialValues, onClose, onSu
 
           <label className="field">
             <span>Genre</span>
-            <input name="genre" value={form.genre} onChange={onChange} />
+            <select name="genre" value={form.genre} onChange={onChange}>
+              <option value="">Select genre...</option>
+              {GENRE_OPTIONS.map((genre) => (
+                <option key={genre} value={genre}>
+                  {genre}
+                </option>
+              ))}
+            </select>
           </label>
 
           <label className="field">
@@ -129,7 +164,7 @@ export default function BookFormModal({ open, mode, initialValues, onClose, onSu
             <input name="isbn" value={form.isbn} onChange={onChange} />
           </label>
 
-          <label className="flex items-center gap-2 text-sm text-slate-200 md:col-span-2">
+          <label className={`flex items-center gap-2 text-sm md:col-span-2 ${isLight ? 'text-slate-700' : 'text-slate-200'}`}>
             <input
               type="checkbox"
               name="isAvailable"
@@ -140,13 +175,17 @@ export default function BookFormModal({ open, mode, initialValues, onClose, onSu
             Available
           </label>
 
-          {error && <p className="text-sm text-rose-300 md:col-span-2">{error}</p>}
+          {error && (
+            <p className={`text-sm md:col-span-2 ${isLight ? 'text-rose-600' : 'text-rose-300'}`}>{error}</p>
+          )}
 
           <div className="mt-2 flex justify-end gap-3 md:col-span-2">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border border-white/20 px-4 py-2 text-sm text-slate-200 hover:bg-white/10"
+              className={`rounded-lg border px-4 py-2 text-sm ${
+                isLight ? 'border-slate-300 text-slate-700 hover:bg-slate-100' : 'border-white/20 text-slate-200 hover:bg-white/10'
+              }`}
             >
               Cancel
             </button>

@@ -7,19 +7,23 @@ import {
   getBooksValidation,
   bookIdValidation,
 } from './books.validation';
+import { authenticateToken, requireRole } from '../../middlewares/auth';
 
 const router = Router();
 
-router.get('/', validate(getBooksValidation), bookController.getBooks);
+router.use(authenticateToken);
 
-router.post('/', validate(createBookValidation), bookController.createBook);
+router.get('/', validate(getBooksValidation), bookController.getBooks);
 
 router.get('/search', bookController.searchBooks);
 
 router.get('/:id', validate(bookIdValidation), bookController.getBookById);
 
-router.put('/:id', validate(updateBookValidation), bookController.updateBook);
 
-router.delete('/:id', validate(bookIdValidation), bookController.deleteBook);
+router.post('/', requireRole('admin'), validate(createBookValidation), bookController.createBook);
+
+router.put('/:id', requireRole('admin'), validate(updateBookValidation), bookController.updateBook);
+
+router.delete('/:id', requireRole('admin'), validate(bookIdValidation), bookController.deleteBook);
 
 export default router;

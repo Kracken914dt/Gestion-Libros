@@ -8,6 +8,10 @@
   color-scheme: dark;
 }
 
+html.light {
+  color-scheme: light;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -24,20 +28,40 @@ body {
   display: grid;
   place-items: center;
   padding: 1rem;
+}
+
+.login-shell-light {
   background:
     radial-gradient(circle at 15% 12%, #d7dbff 0, #e8ebff 15%, transparent 33%),
     radial-gradient(circle at 80% 90%, #ececff 0, #f3f4ff 20%, transparent 40%),
     linear-gradient(180deg, #f3f4f6 0%, #eceff3 100%);
 }
 
+.login-shell-dark {
+  background:
+    radial-gradient(circle at 18% 16%, #12274d 0, #0b1d3e 20%, transparent 40%),
+    radial-gradient(circle at 78% 90%, #1a2f59 0, #122245 22%, transparent 45%),
+    linear-gradient(180deg, #041126 0%, #05152e 100%);
+}
+
 .login-card {
   width: min(100%, 420px);
   border-radius: 14px;
   padding: 2.25rem 2rem;
+  position: relative;
+  animation: cardUp 420ms ease;
+}
+
+.login-card-light {
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid #d9deea;
   box-shadow: 0 28px 60px rgba(15, 23, 42, 0.2);
-  animation: cardUp 420ms ease;
+}
+
+.login-card-dark {
+  background: rgba(11, 27, 56, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 26px 60px rgba(2, 6, 23, 0.5);
 }
 
 .auth-field {
@@ -50,6 +74,10 @@ body {
   font-size: 0.9rem;
   color: #1f2937;
   font-weight: 500;
+}
+
+.login-card-dark .auth-field > span {
+  color: #cbd5e1;
 }
 
 .auth-input-wrap {
@@ -75,6 +103,19 @@ body {
   background: transparent;
   color: #111827;
   font-size: 0.95rem;
+}
+
+.auth-input-wrap-dark {
+  border-color: rgba(148, 163, 184, 0.28);
+  background: rgba(15, 23, 42, 0.65);
+}
+
+.auth-input-wrap-dark input {
+  color: #e2e8f0;
+}
+
+.auth-input-wrap-dark input::placeholder {
+  color: #94a3b8;
 }
 
 .auth-primary-btn {
@@ -160,6 +201,12 @@ body {
   background: transparent;
 }
 
+html.light .icon-pill {
+  border-color: #c9d3e4;
+  color: #334155;
+  background: #ffffff;
+}
+
 .filter-label {
   display: block;
   margin-bottom: 0.55rem;
@@ -168,6 +215,10 @@ body {
   font-weight: 700;
   letter-spacing: 0.08em;
   color: #93a4c5;
+}
+
+html.light .filter-label {
+  color: #64748b;
 }
 
 .filter-box {
@@ -180,6 +231,37 @@ body {
   display: flex;
   align-items: center;
   gap: 0.55rem;
+}
+
+html.light .filter-box {
+  border-color: #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+}
+
+html.light .filter-box input::placeholder {
+  color: #94a3b8;
+}
+
+.search-box {
+  border-width: 1px;
+  position: relative;
+}
+
+.search-box::after {
+  content: '';
+  position: absolute;
+  left: 42px;
+  right: 12px;
+  bottom: 7px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.5), transparent);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.search-box:focus-within::after {
+  opacity: 1;
 }
 
 .filter-box input,
@@ -200,8 +282,13 @@ body {
   font-size: 0.86rem;
 }
 
+html.light .field > span {
+  color: #475569;
+}
+
 .field input,
-.field textarea {
+.field textarea,
+.field select {
   width: 100%;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.13);
@@ -211,14 +298,30 @@ body {
   outline: none;
 }
 
+html.light .field input,
+html.light .field textarea,
+html.light .field select {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
 .field textarea {
   resize: vertical;
 }
 
 .field input:focus,
-.field textarea:focus {
+.field textarea:focus,
+.field select:focus {
   border-color: #7f78ff;
   box-shadow: 0 0 0 3px rgba(127, 120, 255, 0.2);
+}
+
+html.light .field input:focus,
+html.light .field textarea:focus,
+html.light .field select:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
 }
 
 .detail-card {

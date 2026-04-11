@@ -3,7 +3,7 @@ import LoginPage from './pages/LoginPage';
 import BooksPage from './pages/BooksPage';
 import BookDetailPage from './pages/BookDetailPage';
 
-const isAuthenticated = () => localStorage.getItem('book_app_auth') === 'true';
+const isAuthenticated = () => Boolean(localStorage.getItem('book_app_token'));
 
 function PrivateRoute({ children }) {
   if (!isAuthenticated()) {

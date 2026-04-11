@@ -7,6 +7,8 @@ import { env } from "./config/env";
 import { logger, stream } from "./config/logger";
 import { errorHandler, notFoundHandler } from "./middlewares/errorHandler";
 import bookRoutes from "./modules/books/books.routes";
+import authRoutes from "./modules/auth/auth.routes";
+import { authService } from "./modules/auth/auth.service";
 
 const app = express();
 
@@ -53,6 +55,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api/books", bookRoutes);
+app.use("/api/auth", authRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
@@ -60,6 +63,7 @@ app.use(errorHandler);
 const startServer = async (): Promise<void> => {
   try {
     await connectDatabase();
+    await authService.ensureDefaultAdmin();
 
     app.listen(env.PORT, () => {
       logger.info(`Server running on port ${env.PORT} in ${env.NODE_ENV} mode`);

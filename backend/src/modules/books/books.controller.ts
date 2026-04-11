@@ -15,14 +15,19 @@ export class BookController {
 
   async getBooks(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      const rawIsAvailable = req.query.isAvailable;
+      const normalizedIsAvailable = Array.isArray(rawIsAvailable)
+        ? rawIsAvailable[0]
+        : rawIsAvailable;
+
       const filters: BookFilters = {
         page: Number(req.query.page) || 1,
         limit: Number(req.query.limit) || 10,
         genre: req.query.genre as string,
         search: req.query.search as string,
         isAvailable:
-          req.query.isAvailable !== undefined
-            ? req.query.isAvailable === "true"
+          normalizedIsAvailable !== undefined
+            ? String(normalizedIsAvailable).toLowerCase() === "true"
             : undefined,
       };
 

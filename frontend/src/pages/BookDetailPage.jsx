@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { deleteBook, getBookById, updateBook } from '../api/books';
 import BookFormModal from '../components/BookFormModal';
 import ConfirmDialog from '../components/ConfirmDialog';
+import { isAdminUser } from '../utils/auth';
 
 const formatLongDate = (value) => {
   if (!value) return 'N/A';
@@ -21,6 +22,7 @@ export default function BookDetailPage() {
   const [saving, setSaving] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const canManageBooks = isAdminUser();
 
   const fetchBook = async () => {
     if (!id) return;
@@ -105,20 +107,22 @@ export default function BookDetailPage() {
             </span>
           </button>
 
-          <div className="flex gap-2">
-            <button
-              onClick={() => setEditOpen(true)}
-              className="rounded-lg border border-white/20 px-4 py-2 text-sm text-slate-100 hover:bg-white/10"
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => setConfirmOpen(true)}
-              className="rounded-lg bg-rose-500 px-4 py-2 text-sm font-medium text-white hover:bg-rose-400"
-            >
-              Delete
-            </button>
-          </div>
+          {canManageBooks && (
+            <div className="flex gap-2">
+              <button
+                onClick={() => setEditOpen(true)}
+                className="rounded-lg border border-white/20 px-4 py-2 text-sm text-slate-100 hover:bg-white/10"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => setConfirmOpen(true)}
+                className="rounded-lg bg-rose-500 px-4 py-2 text-sm font-medium text-white hover:bg-rose-400"
+              >
+                Delete
+              </button>
+            </div>
+          )}
         </header>
 
         <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
@@ -215,23 +219,27 @@ export default function BookDetailPage() {
         </div>
       </section>
 
-      <BookFormModal
-        open={editOpen}
-        mode="edit"
-        initialValues={book}
-        onClose={() => setEditOpen(false)}
-        onSubmit={handleEdit}
-        loading={saving}
-      />
+      {canManageBooks && (
+        <>
+          <BookFormModal
+            open={editOpen}
+            mode="edit"
+            initialValues={book}
+            onClose={() => setEditOpen(false)}
+            onSubmit={handleEdit}
+            loading={saving}
+          />
 
-      <ConfirmDialog
-        open={confirmOpen}
-        title="Delete book"
-        message="This action cannot be undone. Do you want to continue?"
-        onCancel={() => setConfirmOpen(false)}
-        onConfirm={handleDelete}
-        loading={saving}
-      />
+          <ConfirmDialog
+            open={confirmOpen}
+            title="Delete book"
+            message="This action cannot be undone. Do you want to continue?"
+            onCancel={() => setConfirmOpen(false)}
+            onConfirm={handleDelete}
+            loading={saving}
+          />
+        </>
+      )}
     </main>
   );
 }
