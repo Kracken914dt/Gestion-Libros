@@ -10,6 +10,9 @@ book-management-app/
 ├── frontend/         # SPA con React + TailwindCSS
 └── docker-compose.yml
 ```
+## Diseño en Figma
+
+https://www.figma.com/design/3edBycdZqy8RIM89Cur91E/Untitled?node-id=0-1&t=FwEW8GcHYbov0hBF-1
 
 ## Prerrequisitos
 
