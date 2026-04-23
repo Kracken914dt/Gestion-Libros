@@ -26,3 +26,15 @@ export interface AuthPayload {
   email: string;
   role: "admin" | "user";
 }
+
+export interface ManagedUser {
+  id: string;
+  email: string;
+  role: "user";
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface AdminUpdateUserInput {
+  email: string;
+}

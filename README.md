@@ -1,198 +1,188 @@
 # Aplicacion de Gestion de Libros
 
-Aplicacion CRUD full-stack para gestionar libros, construida con React (frontend), Node.js/Express (backend) y MongoDB Atlas (base de datos).
+Aplicacion CRUD full-stack para gestionar libros, construida con React (frontend), Node.js/Express (backend) y MongoDB.
 
 ## Arquitectura
 
-```
-book-management-app/
-├── backend/          # API con Express + TypeScript
-├── frontend/         # SPA con React + TailwindCSS
+```text
+Gestion-Libros/
+├── backend/             # API con Express + TypeScript + JWT
+├── frontend/            # SPA con React + Vite + TailwindCSS
 └── docker-compose.yml
 ```
 
-## Prerrequisitos
+## Caracteristicas Principales
 
-- Node.js 20+
-- Cuenta de MongoDB Atlas (o MongoDB local)
-- Docker y Docker Compose (opcional)
+### Backend
+- API REST con Express y TypeScript
+- MongoDB con Mongoose
+- Autenticacion con JWT
+- Password hashing con bcryptjs
+- Validacion de datos con express-validator
+- Manejo centralizado de errores
+- Control de acceso por roles: admin y user
+- Creacion automatica de admin por defecto al iniciar el servidor
 
-## Inicio Rapido
+### Frontend
+- React 18 + Vite
+- React Router para navegacion
+- Axios con interceptor para token Bearer
+- TailwindCSS para UI
+- Vista de libros en cards y tabla
+- Modo claro/oscuro persistente
+- Modal de gestion de usuarios para admin (listar, editar email y eliminar usuarios role=user)
+- Loaders reutilizables en estados de carga
 
-### Usando Docker Compose
+## Acceso por Roles
 
-1. Clona el repositorio.
-2. Crea un archivo `.env` en la raiz del proyecto:
-   ```
-   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/book-management
-   ```
-3. Ejecuta:
-   ```bash
-   docker-compose up --build
-   ```
-4. Accede a la aplicacion en `http://localhost`.
+- admin:
+   - Puede crear, editar y eliminar libros
+   - Puede abrir la ventana Users para gestionar cuentas de tipo user
+- user (rol por defecto en registro):
+   - Solo puede visualizar libros y detalle
 
-### Desarrollo Local
-
-#### Backend
-
-```bash
-cd backend
-npm install
-
-# Crear archivo .env
-cp .env.example .env
-# Editar .env con tu URI de MongoDB
-
-npm run dev
-```
-
-La API estara disponible en `http://localhost:3000`.
-
-#### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-La aplicacion estara disponible en `http://localhost:4200`.
+Regla de seguridad importante:
+- Los endpoints de gestion de usuarios excluyen cuentas admin y bloquean editar/eliminar admins.
 
 ## Endpoints de la API
 
-| Metodo | Endpoint | Descripcion |
-|--------|----------|-------------|
-| GET | `/api/books` | Lista todos los libros (con paginacion y filtros) |
-| POST | `/api/books` | Crea un nuevo libro |
-| GET | `/api/books/:id` | Obtiene un libro especifico |
-| PUT | `/api/books/:id` | Actualiza un libro |
-| DELETE | `/api/books/:id` | Elimina un libro |
-| GET | `/api/books/search?q=query` | Busca libros |
+### Auth
 
-### Parametros de Consulta para GET /api/books
+| Metodo | Endpoint | Acceso | Descripcion |
+|--------|----------|--------|-------------|
+| POST | /api/auth/register | Publico | Registra usuario con rol user |
+| POST | /api/auth/login | Publico | Login y retorno de JWT |
+| GET | /api/auth/users | Admin | Lista usuarios role=user |
+| PUT | /api/auth/users/:id | Admin | Edita email de usuario role=user |
+| DELETE | /api/auth/users/:id | Admin | Elimina usuario role=user |
 
-- `page` - Numero de pagina (por defecto: 1)
-- `limit` - Elementos por pagina (por defecto: 10, maximo: 100)
-- `genre` - Filtro por genero
-- `isAvailable` - Filtro por disponibilidad (true/false)
-- `search` - Busqueda por titulo o autor
+### Books
 
-## Caracteristicas
+| Metodo | Endpoint | Acceso | Descripcion |
+|--------|----------|--------|-------------|
+| GET | /api/books | Authenticated | Lista libros (paginacion y filtros) |
+| GET | /api/books/search | Authenticated | Busca libros |
+| GET | /api/books/:id | Authenticated | Obtiene detalle de libro |
+| POST | /api/books | Admin | Crea libro |
+| PUT | /api/books/:id | Admin | Actualiza libro |
+| DELETE | /api/books/:id | Admin | Elimina libro |
 
-### Backend
-- API RESTful con Express.js
-- TypeScript para seguridad de tipos
-- MongoDB con Mongoose ODM
-- Validacion de entrada con express-validator
-- Middleware de manejo de errores
-- Encabezados de seguridad con Helmet
-- Registro de solicitudes con Morgan
-- Logger con Winston
+### Parametros de Consulta en GET /api/books
 
-### Frontend
-- React 18 con Vite
-- React Router para navegacion
-- Axios para consumo de API
-- TailwindCSS para estilos
-- Diseno responsivo
-- Estados de carga y manejo de errores
-- Notificaciones tipo toast
-- Dialogos de confirmacion
-- Paginacion
-- Busqueda y filtros
+- page: numero de pagina (default 1)
+- limit: elementos por pagina (default 10, max 100)
+- genre: filtro por genero
+- isAvailable: filtro por disponibilidad (true/false)
+- search: busqueda por titulo o autor
 
-## Estructura del Proyecto
+## Inicio Rapido
 
-### Backend
-```
-backend/src/
-├── config/         # Base de datos, variables de entorno, logger
-├── middlewares/    # Manejador de errores, validador
-├── modules/
-│   └── books/      # Modulo de libros (controller, service, model, routes, validation)
-├── utils/          # Helpers de respuesta
-└── app.ts          # Punto de entrada
+### 1) Backend
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+npm run dev
 ```
 
-### Frontend
+API local: http://localhost:3000
+
+### 2) Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
 ```
-frontend/src/app/
-├── core/           # Servicios, modelos, interceptores
-├── features/
-│   └── books/      # Modulo funcional de libros
-│       ├── components/
-│       │   ├── book-list/
-│       │   ├── book-form/
-│       │   └── book-detail/
-│       ├── books.module.ts
-│       └── books-routing.module.ts
-├── shared/         # Componentes reutilizables
-└── app.module.ts
-```
+
+App local (Vite): http://localhost:5173
 
 ## Variables de Entorno
 
-### Backend
-- `PORT` - Puerto del servidor (por defecto: 3000)
-- `NODE_ENV` - Entorno (development/production)
-- `MONGODB_URI` - Cadena de conexion a MongoDB
-- `CORS_ORIGIN` - Origen permitido para CORS
-- `LOG_LEVEL` - Nivel de logging
+### Backend (.env)
 
-## Tecnologias
+- PORT: puerto del servidor (default 3000)
+- NODE_ENV: development o production
+- MONGODB_URI: conexion a MongoDB
+- CORS_ORIGIN: lista CSV de origenes permitidos
+   - ejemplo: http://localhost:5173,http://localhost:4200,https://tu-frontend.vercel.app
+- LOG_LEVEL: nivel de logs (info, debug, etc)
+- JWT_SECRET: secreto para firmar tokens
+- JWT_EXPIRES_IN: expiracion JWT (ej. 8h)
+- ADMIN_EMAIL: correo del admin inicial
+- ADMIN_PASSWORD: password del admin inicial
+
+### Frontend (.env)
+
+- VITE_API_URL: URL base del backend
+   - ejemplo: https://tu-backend.onrender.com/api
+
+## Credenciales Admin por Defecto
+
+Si no defines variables en entorno, el backend usa:
+
+- ADMIN_EMAIL=admin@library.com
+- ADMIN_PASSWORD=password123
+
+Recomendado: cambiar estas credenciales en produccion.
+
+## Estructura Actual del Proyecto
 
 ### Backend
-- Node.js 20
-- Express.js 4
-- TypeScript 5
-- Mongoose 8
-- MongoDB Atlas
-- express-validator
-- Helmet
-- Morgan
-- Winston
+
+```text
+backend/src/
+├── app.ts
+├── config/
+├── middlewares/
+├── modules/
+│   ├── auth/
+│   └── books/
+└── utils/
+```
 
 ### Frontend
-- React 18
-- Vite 5
-- TailwindCSS 3
-- React Router 6
-- Axios
 
-## Desarrollo
-
-### Ejecutar Tests
-
-Backend:
-```bash
-cd backend
-npm test
+```text
+frontend/src/
+├── api/
+├── components/
+├── pages/
+├── utils/
+├── App.jsx
+├── main.jsx
+└── index.css
 ```
 
-Frontend:
+## Scripts
+
+### Backend
+
 ```bash
-cd frontend
+npm run dev
 npm run build
+npm run start
+npm run test
 ```
 
-### Compilar para Produccion
+### Frontend
 
-Backend:
 ```bash
-cd backend
+npm run dev
 npm run build
+npm run preview
 ```
 
-Frontend:
+## Docker (Opcional)
+
 ```bash
-cd frontend
-npm run build
+docker-compose up --build
 ```
 
 ## Licencia
 
-Julio Molina Redondo  
+Julio Molina Redondo
 Diego Tique Ramirez
 
 MIT

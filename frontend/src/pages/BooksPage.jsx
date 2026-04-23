@@ -1,4 +1,4 @@
-import { Plus, Rows2, LayoutGrid, LogOut, Search, Sun, Moon, Eye, Pencil, Trash2 } from 'lucide-react';
+import { Plus, Rows2, LayoutGrid, LogOut, Search, Sun, Moon, Eye, Pencil, Trash2, Users } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createBook, deleteBook, getBooks, updateBook } from '../api/books';
@@ -6,6 +6,7 @@ import BookCard from '../components/BookCard';
 import BookFormModal from '../components/BookFormModal';
 import ConfirmDialog from '../components/ConfirmDialog';
 import Loader from '../components/Loader';
+import UsersAdminModal from '../components/UsersAdminModal';
 import { applyTheme, getInitialTheme } from '../utils/theme';
 import { isAdminUser } from '../utils/auth';
 
@@ -34,6 +35,7 @@ export default function BooksPage() {
   const [activeBook, setActiveBook] = useState(null);
 
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [usersModalOpen, setUsersModalOpen] = useState(false);
   const [meta, setMeta] = useState({ total: 0, page: 1, limit: 9, totalPages: 1 });
   const canManageBooks = isAdminUser();
 
@@ -184,6 +186,12 @@ export default function BooksPage() {
               <button onClick={openCreateModal} className="action-pill bg-electric text-white">
                 <Plus size={14} />
                 Add Book
+              </button>
+            )}
+            {canManageBooks && (
+              <button onClick={() => setUsersModalOpen(true)} className="action-pill bg-[#0f2a56] text-slate-100">
+                <Users size={14} />
+                Users
               </button>
             )}
             <button onClick={logout} className="icon-pill" title="Logout">
@@ -398,6 +406,12 @@ export default function BooksPage() {
             onCancel={() => setDeleteTarget(null)}
             onConfirm={onDeleteBook}
             loading={saving}
+            theme={theme}
+          />
+
+          <UsersAdminModal
+            open={usersModalOpen}
+            onClose={() => setUsersModalOpen(false)}
             theme={theme}
           />
         </>

@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 
 export const loginValidation = [
   body("email").isEmail().withMessage("Valid email is required"),
@@ -14,4 +14,13 @@ export const registerValidation = [
     .isString()
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters long"),
+];
+
+export const userIdValidation = [
+  param("id").isMongoId().withMessage("Valid user id is required"),
+];
+
+export const adminUpdateUserValidation = [
+  ...userIdValidation,
+  body("email").isEmail().withMessage("Valid email is required"),
 ];
